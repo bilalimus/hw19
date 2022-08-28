@@ -3,10 +3,11 @@ import { useRef, useState } from "react";
 const SimpleInput = (props) => {
   const nameInputRef = useRef();
   const [isNameValid, setIsNameValid] = useState(true);
+  const [isTouched, setIsTouched] = useState(false)
 
   const formSubmissionHandler = (event) => {
     event.preventDefault();
-    setIsNameValid(true)
+    setIsNameValid(true);
 
     const enteredValue = nameInputRef.current.value;
 
@@ -14,15 +15,32 @@ const SimpleInput = (props) => {
       setIsNameValid(false);
       return;
     }
-    console.log('send to server');
+    console.log("send to server");
   };
 
-  const inputClasses = isNameValid ? 'form-control' : 'form-control invalid' 
+  const nameInputBlurHandler = () => {
+    setIsNameValid(true);
+    const enteredValue = nameInputRef.current.value;
+
+    if (enteredValue.trim().length < 3) {
+      setIsNameValid(false);
+      setIsTouched(false)
+      return;
+    }
+    setIsTouched(true)
+  };
+
+  const inputClasses = isNameValid ? "form-control" : "form-control invalid";
   return (
     <form onSubmit={formSubmissionHandler}>
       <div className={inputClasses}>
         <label htmlFor="name">Your Name</label>
-        <input ref={nameInputRef} type="text" id="name" />
+        <input
+          ref={nameInputRef}
+          onBlur={nameInputBlurHandler}
+          type="text"
+          id="name"
+        />
         {!isNameValid && (
           <p className="error-text">
             Your name should be contain more than 2 characters.
@@ -30,7 +48,7 @@ const SimpleInput = (props) => {
         )}
       </div>
       <div className="form-actions">
-        <button>Submit</button>
+        <button disabled={!isTouched}>Submit</button>
       </div>
     </form>
   );
