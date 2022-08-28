@@ -3,7 +3,8 @@ import { useRef, useState } from "react";
 const SimpleInput = (props) => {
   const nameInputRef = useRef();
   const [isNameValid, setIsNameValid] = useState(true);
-  const [isTouched, setIsTouched] = useState(false)
+  const [isTouched, setIsTouched] = useState(false);
+  const [name, setName] = useState("");
 
   const formSubmissionHandler = (event) => {
     event.preventDefault();
@@ -24,10 +25,21 @@ const SimpleInput = (props) => {
 
     if (enteredValue.trim().length < 3) {
       setIsNameValid(false);
-      setIsTouched(false)
+      setIsTouched(false);
       return;
     }
+    setIsTouched(true);
+  };
+
+  const nameInputChangeHandler = (event) => {
+    setName(event.target.value);
+    setIsNameValid(true);
     setIsTouched(true)
+    if (event.target.value.trim().length < 3) {
+      setIsNameValid(false);
+      setIsTouched(false);
+      return;
+    }
   };
 
   const inputClasses = isNameValid ? "form-control" : "form-control invalid";
@@ -36,6 +48,7 @@ const SimpleInput = (props) => {
       <div className={inputClasses}>
         <label htmlFor="name">Your Name</label>
         <input
+          onChange={nameInputChangeHandler}
           ref={nameInputRef}
           onBlur={nameInputBlurHandler}
           type="text"
