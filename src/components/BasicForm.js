@@ -35,6 +35,7 @@ const formReducer = (state, action) => {
       isLastNameValid:
         action.isValid === "LAST_NAME" ? false : state.isLastNameValid,
       isEmailValid: action.isValid === "EMAIL" ? false : state.isEmailValid,
+      isTouched: false,
     };
   }
   if (action.type === "IS_TOUCHED") {
