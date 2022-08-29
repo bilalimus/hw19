@@ -53,6 +53,7 @@ const SimpleInput = (props) => {
           onBlur={nameInputBlurHandler}
           type="text"
           id="name"
+          value={name}
         />
         {!isNameValid && (
           <p className="error-text">
